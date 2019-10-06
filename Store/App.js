@@ -1,47 +1,25 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import * as Permissions from 'expo-permissions';
+import * as Font from 'expo-font';
+import AppNavigator from './src/component/AppNavigator';
 
-import { BarCodeScanner } from 'expo-barcode-scanner';
-
-export default class BarcodeScannerExample extends React.Component {
+class App extends React.Component {
   state = {
-    hasCameraPermission: null,
+    fontLoaded: false,
   };
-
   async componentDidMount() {
-    this.getPermissionsAsync();
+    await Font.loadAsync({
+      'quicksand-medium': require('./assets/fonts/Quicksand-Medium.ttf'),
+      'quicksand-semibold': require('./assets/fonts/Quicksand-SemiBold.ttf'),
+    });
+    this.setState({ fontLoaded: true });
   }
-
-  getPermissionsAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
-  };
-
   render() {
-    const { hasCameraPermission } = this.state;
-    if (hasCameraPermission === null) {
-      return <Text>Requesting for camera permission</Text>;
-    }
-    if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
-    }
     return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-        }}>
-        <BarCodeScanner
-          onBarCodeScanned={(event) => this.handleBarCodeScanned(event)}
-          style={StyleSheet.absoluteFillObject}
-        />
-      </View>
-    );
+      <>
+        {this.state.fontLoaded ? <AppNavigator /> : null}
+      </>
+    )
   }
-
-  handleBarCodeScanned = ({ type, data }) => {
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  };
 }
+
+export default App;
