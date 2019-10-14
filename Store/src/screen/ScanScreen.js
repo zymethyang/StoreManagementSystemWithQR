@@ -53,8 +53,10 @@ class ScanScreen extends React.Component {
             data: data
         });
 
-        Alert.alert('Thông báo', 'Đã quét xong');
-        goBack();
+        if (params.role === 'export') {
+            Alert.alert('Thông báo', 'Đã quét xong');
+            goBack();
+        }
     };
 }
 

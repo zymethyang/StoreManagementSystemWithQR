@@ -12,8 +12,8 @@ class HomeScreen extends React.Component {
                 </View>
                 <View style={styles.btnLayout}>
                     <View style={styles.btnLayoutChildLeft}>
-                        <Button title="Nhập hàng"
-                            onPress={() => navigate('Scan', { role: 'import' })} />
+                        <Button title="Kiểm hàng"
+                            onPress={() => navigate('Scan', { role: 'check' })} />
                     </View>
                     <View style={styles.btnLayoutChildRight}>
                         <Button title="Xuất hàng"
