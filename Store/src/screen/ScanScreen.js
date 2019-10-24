@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import moment from 'moment';
 
 const firebase = require('../shared/firebase');
 const database = firebase.database();
@@ -9,6 +10,7 @@ const database = firebase.database();
 class ScanScreen extends React.Component {
     state = {
         hasCameraPermission: null,
+        data: null
     };
 
     async componentDidMount() {
@@ -52,6 +54,16 @@ class ScanScreen extends React.Component {
             role: params.role,
             data: data
         });
+
+        if (this.state.data !== data) {
+            await database.ref('/log').push({
+                role: params.role,
+                data: data,
+                date: moment().unix()
+            });
+        }
+
+        await this.setState({ data });
 
         if (params.role === 'export') {
             Alert.alert('Thông báo', 'Đã quét xong');
