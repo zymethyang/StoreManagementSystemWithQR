@@ -3,23 +3,21 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import { Button } from 'reactstrap';
 
-// import lib
+import './HomePage.scss';
 
 class HomePage extends React.Component {
     render() {
         return (
-            <>
-                <Container>
-                    <Row>
-                        <Col>
-                            <Button color="success" onClick={() => window.location.href = '/check'}>Kiểm tra</Button>{''}
-                        </Col>
-                        <Col>
-                            <Button color="success" onClick={() => window.location.href = '/export'}>Xuất hàng</Button>{''}
-                        </Col>
-                    </Row>
-                </Container>
-            </>
+            <div className="home--container">
+                <div className="home--left" onClick={() => window.location.href = '/check'}>
+                    <img src="check-icon.png" className="home--check_icon" />
+                    <div className="home--text">KIỂM TRA</div>
+                </div>
+                <div className="home--right" onClick={() => window.location.href = '/export'}>
+                    <img src="export-icon.png" className="home--export_icon" />
+                    <div className="home--text">XUẤT HÀNG</div>
+                </div>
+            </div>
         );
     }
 }

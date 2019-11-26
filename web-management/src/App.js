@@ -19,7 +19,6 @@ function App() {
         <div style={{ marginBottom: 40, marginTop: 30, textAlign: 'center' }}>
           <Header />
         </div>
-
         <Switch>
           <Route path="/" exact>
             <HomePage />

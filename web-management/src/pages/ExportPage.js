@@ -1,9 +1,9 @@
 import React from 'react';
 import { Table } from 'reactstrap';
 
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
 
-// import lib
+import './ExportPage.scss'
 
 const firebase = require('../shared/firebase');
 require('firebase/database');
@@ -31,36 +31,34 @@ class ExportPage extends React.Component {
     render() {
         const { exportList } = this.state;
         return (
-            <>
-                <Container>
-                    <Row>
-                        <Col>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Thời gian</th>
-                                        <th>Xóa lịch sử</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        exportList.map((ep, index) =>
-                                            (<tr key={index}>
-                                                <th scope="row">{index + 1}</th>
-                                                <td>{moment.unix(ep.date).format('hh:mm:ss - DD/MM/YYYY')}</td>
-                                                <td><i className="material-icons" style={{ cursor: 'pointer', color: 'red' }}>delete</i></td>
-                                            </tr>))
-                                    }
-                                </tbody>
-                            </Table>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Button color="secondary" onClick={() => window.location.href = '/'}>QUAY LẠI</Button>{''}
-                    </Row>
-                </Container>
-            </>
+            <div className="export_page--container">
+                <Row>
+                    <Col>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Thời gian</th>
+                                    <th>Xóa lịch sử</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    exportList.map((ep, index) =>
+                                        (<tr key={index}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{moment.unix(ep.date).format('hh:mm:ss - DD/MM/YYYY')}</td>
+                                            <td><i className="material-icons" style={{ cursor: 'pointer', color: 'red' }}>delete</i></td>
+                                        </tr>))
+                                }
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
+                <div className="export_page--btn--back">
+                    <Button color="secondary" onClick={() => window.location.href = '/'}>QUAY LẠI</Button>{''}
+                </div>
+            </div>
         );
     }
 }
