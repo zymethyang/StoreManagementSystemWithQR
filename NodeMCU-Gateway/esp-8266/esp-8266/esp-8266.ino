@@ -4,7 +4,10 @@
 #include <PubSubClient.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
-#include <SoftwareSerial.h>
+#include <Wire.h>
+
+#include <ArduinoJson.h>
+
 
 //Declare global variables
 const char* ssid = "GAIA";
@@ -18,19 +21,17 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 
 //Setup serial for lora connect
-SoftwareSerial serial_P01(D3, D4);
+//SoftwareSerial serial_P01(D2, D1); //RX, TX
 
 //Declare mqtt callback function - get string array -> convert to string -> send to lora.
 void callbackMQTT(char* topic, byte* payload, unsigned int length) {
   char message[length + 1];
-  String loraSend = "";
-
   for (int i = 0; i < length; i++) {
     message[i] = (char)payload[i];
   }
   message[length] = '\0';
 
-  sendDataLora(message);
+  sendDataUART(message);
 }
 
 //Setup mqtt pubsubclient
@@ -135,9 +136,8 @@ void setup_wifi() {
 void setup() {
   Serial.begin(9600);
   while (!Serial);
-  serial_P01.begin(9600);
-  while(!serial_P01);
-  
+  Wire.begin(D1, D2);
+
   Serial.setDebugOutput(true);
   setup_wifi();
   delay(1000);
@@ -172,6 +172,66 @@ void reconnect() {
   }
 }
 
-void sendDataLora(String anything) {
+void sendDataUART(char* anything) {
   Serial.println(anything);
+  byte of_1 = 1;
+  byte of_2 = 2;
+  byte of_3 = 3;
+  byte of_4 = 4;
+  byte of_5 = 5;
+  byte of_6 = 6;
+
+  StaticJsonDocument<96> doc;
+  deserializeJson(doc, anything);
+  if (doc.containsKey("of_1")) {
+    of_1 = doc["of_1"];
+  }
+  if (doc.containsKey("of_2")) {
+    of_2 = doc["of_2"];
+  }
+  if (doc.containsKey("of_3")) {
+    of_3 = doc["of_3"];
+  }
+
+  if (doc.containsKey("of_4")) {
+    of_4 = doc["of_4"];
+  }
+
+  if (doc.containsKey("of_5")) {
+    of_5 = doc["of_5"];
+  }
+  if (doc.containsKey("of_6")) {
+    of_6 = doc["of_6"];
+  }
+
+  Wire.beginTransmission(8);
+  Wire.write(of_1);
+  Wire.write(of_2);
+  Wire.write(of_3);
+  Wire.write(of_4);
+  Wire.write(of_5);
+  Wire.write(of_6);
+  Wire.endTransmission();
+
+  /*
+    Wire.beginTransmission(8);
+    Wire.write(of_2);
+    Wire.endTransmission();
+
+    Wire.beginTransmission(8);
+    Wire.write(of_3);
+    Wire.endTransmission();
+
+    Wire.beginTransmission(8);
+    Wire.write(of_4);
+    Wire.endTransmission();
+
+    Wire.beginTransmission(8);
+    Wire.write(of_5);
+    Wire.endTransmission();
+
+    Wire.beginTransmission(8);
+    Wire.write(of_6);
+    Wire.endTransmission();
+  */
 }

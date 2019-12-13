@@ -11,9 +11,53 @@
     }
     &--btn{
         &--back{
-            text-align: center;
-            padding-top: 10px;
+            padding-top: 20px;
             padding-bottom: 20px;
+            margin-left: 30px;
+        }
+    }
+    &--table{
+        &--container{
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+        }
+    }
+    &--store{
+        &--container{
+            display: flex;
+            flex-direction: row;
+
+            text-align: center;
+        }
+        &--object{
+            margin-top: 40px;
+            margin-left: 30px;
+
+            width: 100px;
+            height: 100px;
+            background-color: green;
+
+            &--text{
+                margin-top: 30px;
+
+                text-align: center;
+                color: white;
+                font-size: 20px;
+            }
+
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        &--detail{
+            &--container{
+                margin-top: 40px;
+                margin-left: 30px;
+            }
+            &--text{
+                color: black;
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import ExportPage from './pages/ExportPage';
 import CheckPage from './pages/CheckPage';
+import SettingPage from './pages/SettingPage';
 
 import {
   BrowserRouter as Router,
@@ -17,7 +18,9 @@ function App() {
     <Router>
       <>
         <div style={{ marginBottom: 40, marginTop: 30, textAlign: 'center' }}>
+          {/* 
           <Header />
+          */}
         </div>
         <Switch>
           <Route path="/" exact>
@@ -29,8 +32,10 @@ function App() {
           <Route path="/export">
             <ExportPage />
           </Route>
+          <Route path="/setting">
+            <SettingPage />
+          </Route>
         </Switch>
-
       </>
     </Router>
   );

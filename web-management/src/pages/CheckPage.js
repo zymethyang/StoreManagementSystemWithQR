@@ -1,58 +1,78 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import axios from 'axios';
 
 import { Row, Col, Button } from 'reactstrap';
 import './CheckPage.scss'
 // import lib
 
-const firebase = require('../shared/firebase');
-require('firebase/database');
 const moment = require('moment');
 
 class CheckPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            checkList: []
+            checkList: [],
+            name: "",
+            checked_time: "",
+            block_id: null
         }
     }
-    componentDidMount() {
-        firebase.database().ref('/log').on('value', dataStream => {
-            let checkList = []
-            dataStream.forEach((check) => {
-                const { role } = check.val();
-                if (role === 'check') {
-                    checkList.push(check.val())
-                }
-            })
-            this.setState({ checkList })
-        });
+    async componentDidMount() {
+        const { data } = await axios.get('https://yw5zfexc82.execute-api.ap-southeast-1.amazonaws.com/prod');
+        await this.setState({ checkList: data })
     }
+
+    onClickBlock(block_info) {
+        this.setState({
+            name: block_info[0].name,
+            checked_time: `Ngày kiểm tra: ${moment(block_info[0].checked_time).format("hh:mm:ss DD/MM/YYYY")}`,
+            block_id: block_info[0].block_id
+        })
+    }
+
+    onClickClear() {
+        this.setState({
+            name: "",
+            checked_time: "",
+            block_id: null
+        })
+    }
+
+    onClickExport() {
+
+    }
+
     render() {
-        const { checkList } = this.state;
+        const { checkList, name, checked_time, block_id } = this.state;
+        const block_1 = checkList.filter((check) => check.block_id === 'block_1');
+        const block_2 = checkList.filter((check) => check.block_id === 'block_2');
+        const block_3 = checkList.filter((check) => check.block_id === 'block_3');
+        const block_4 = checkList.filter((check) => check.block_id === 'block_4');
+
         return (
             <div className="check_page--container">
                 <Row>
                     <Col>
-                        <Table>
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Thời gian</th>
-                                    <th>Xóa lịch sử</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    checkList.map((check, index) =>
-                                        (<tr key={index}>
-                                            <th scope="row">{index + 1}</th>
-                                            <td>{moment.unix(check.date).format('hh:mm:ss - DD/MM/YYYY')}</td>
-                                            <td><i className="material-icons" style={{ cursor: 'pointer', color: 'red' }}>delete</i></td>
-                                        </tr>))
-                                }
-                            </tbody>
-                        </Table>
+                        <div className="check_page--store--container">
+                            <div className="check_page--store--object" onClick={() => block_1.length > 0 ? this.onClickBlock(block_1) : this.onClickClear()}><p className="check_page--store--object--text">{block_1.length > 0 ? '1' : 'Trống'}</p></div>
+                            <div className="check_page--store--object" onClick={() => block_2.length > 0 ? this.onClickBlock(block_2) : this.onClickClear()}><p className="check_page--store--object--text">{block_2.length > 0 ? '2' : 'Trống'}</p></div>
+                            <div className="check_page--store--object" onClick={() => block_3.length > 0 ? this.onClickBlock(block_3) : this.onClickClear()}><p className="check_page--store--object--text">{block_3.length > 0 ? '3' : 'Trống'}</p></div>
+                            <div className="check_page--store--object" onClick={() => block_4.length > 0 ? this.onClickBlock(block_4) : this.onClickClear()}><p className="check_page--store--object--text">{block_4.length > 0 ? '4' : 'Trống'}</p></div>
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className="check_page--store--detail--container">
+                            <div><p className="check_page--store--detail--text">{name}</p></div>
+                            <div><p className="check_page--store--detail--text">{checked_time}</p></div>
+                            {
+                                block_id ?
+                                    <div>
+                                        <Button color="secondary" onClick={() => this.onClickExport()}>Xuất hàng</Button>{''}
+                                    </div>
+                                    :
+                                    null
+                            }
+                        </div>
                     </Col>
                 </Row>
                 <div className="check_page--btn--back">

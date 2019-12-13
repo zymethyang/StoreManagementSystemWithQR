@@ -13,9 +13,15 @@ class HomePage extends React.Component {
                     <img src="check-icon.png" className="home--check_icon" />
                     <div className="home--text">KIỂM TRA</div>
                 </div>
+                {/* 
                 <div className="home--right" onClick={() => window.location.href = '/export'}>
                     <img src="export-icon.png" className="home--export_icon" />
                     <div className="home--text">XUẤT HÀNG</div>
+                </div>
+                */}
+                <div className="home--right" onClick={() => window.location.href = '/setting'}>
+                    <img src="setting-icon.png" className="home--export_icon" />
+                    <div className="home--text">CÀI ĐẶT VỊ TRÍ</div>
                 </div>
             </div>
         );
