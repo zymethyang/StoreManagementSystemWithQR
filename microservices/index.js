@@ -34,7 +34,7 @@ try {
                 for (let index = 0; index < positionList.length; index++) {
                     setTimeout(() => {
                         device.publish('storage/control', JSON.stringify(positionList[index]))
-                    }, 6000 * index);
+                    }, 4000 * index);
                 }
             });
     })()
