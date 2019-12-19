@@ -1,11 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
+import Amplify, { PubSub } from 'aws-amplify';
+import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import moment from 'moment';
 
-const firebase = require('../shared/firebase');
-const database = firebase.database();
+Amplify.configure({
+    Auth: {
+        identityPoolId: 'ap-southeast-1:40c61ae2-4b83-4e6d-b0a7-6216a600407f',
+        region: 'ap-southeast-1',
+    }
+})
+
+Amplify.addPluggable(new AWSIoTProvider({
+    aws_pubsub_region: 'ap-southeast-1',
+    aws_pubsub_endpoint: 'wss://a162573iz22qwr-ats.iot.ap-southeast-1.amazonaws.com/mqtt',
+}));
+
 
 class ScanScreen extends React.Component {
     state = {
@@ -50,20 +61,7 @@ class ScanScreen extends React.Component {
         const { params } = this.props.navigation.state;
         const { goBack } = this.props.navigation;
 
-        await database.ref('/scan_session').set({
-            role: params.role,
-            data: data
-        });
-
-        if (this.state.data !== data) {
-            await database.ref('/log').push({
-                role: params.role,
-                data: data,
-                date: moment().unix()
-            });
-        }
-
-        await this.setState({ data });
+        await PubSub.publish('storage/client/qr', data);
 
         if (params.role === 'export') {
             Alert.alert('Thông báo', 'Đã quét xong');
