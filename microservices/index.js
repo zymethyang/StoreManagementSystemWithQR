@@ -13,33 +13,33 @@ const pool = mariadb.createPool({ host: '52.220.252.63', database: 'store', user
 
 let conn;
 
-try {
-    (async () => {
-        conn = await pool.getConnection();
-        device
-            .on('connect', function () {
-                console.log('connected');
-                device.subscribe('storage/client/control');
-            });
+device
+    .on('connect', function () {
+        console.log('connected');
+        device.subscribe('storage/client/control');
+    });
 
-        device
-            .on('message', async function (topic, payload) {
-                const msgBuffer = payload.toString();
-                const msg = JSON.parse(msgBuffer);
-                const { act_id } = msg;
-                const rows = await conn.query(`SELECT * FROM position_table WHERE act_id = ?`, [act_id]);
 
-                const positionList = JSON.parse(rows[0].position_list);
+device
+    .on('message', async function (topic, payload) {
+        try {
+            conn = await pool.getConnection();
+            const msgBuffer = payload.toString();
+            const msg = JSON.parse(msgBuffer);
+            const { act_id } = msg;
+            const rows = await conn.query(`SELECT * FROM position_table WHERE act_id = ?`, [act_id]);
 
-                for (let index = 0; index < positionList.length; index++) {
-                    setTimeout(() => {
-                        device.publish('storage/control', JSON.stringify(positionList[index]))
-                    }, 4000 * index);
-                }
-            });
-    })()
-} catch (err) {
-    throw err;
-} finally {
-    if (conn) conn.release(); //release to pool
-}
+            const positionList = JSON.parse(rows[0].position_list);
+
+            for (let index = 0; index < positionList.length; index++) {
+                setTimeout(() => {
+                    device.publish('storage/control', JSON.stringify(positionList[index]))
+                }, 3000 * index);
+            }
+        }
+        catch (err) {
+            throw err;
+        } finally {
+            if (conn) conn.release(); //release to pool
+        }
+    });

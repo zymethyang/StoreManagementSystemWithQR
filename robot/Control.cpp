@@ -20,17 +20,10 @@ void Control::initialRobot() {
   of_04_Servo.attach(_of_04_pin);
   of_05_Servo.attach(_of_05_pin);
   of_06_Servo.attach(_of_06_pin);
-
-  of_01_Servo.startEaseTo(90, 40);
-  of_02_Servo.startEaseTo(20, 40);
-  of_03_Servo.startEaseTo(180, 40);
-  of_04_Servo.startEaseTo(0, 40);
-  of_05_Servo.startEaseTo(20, 40);
-  of_06_Servo.startEaseTo(20, 40);
 }
 
 void Control::outputSignal(int of_01, int of_02, int of_03, int of_04, int of_05, int of_06) {
-  of_01_Servo.startEaseTo(of_01, 40);
+  of_01_Servo.startEaseTo(of_01, 30);
   of_02_Servo.startEaseTo(of_02, 40);
   of_03_Servo.startEaseTo(of_03, 40);
   of_04_Servo.startEaseTo(of_04, 40);

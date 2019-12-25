@@ -28,9 +28,9 @@ class CheckPage extends React.Component {
         this.state = {
             settingPosition: {
                 of_1: 90,
-                of_2: 20,
-                of_3: 180,
-                of_4: 0,
+                of_2: 42,
+                of_3: 140,
+                of_4: 110,
                 of_5: 20,
                 of_6: 20,
             },
@@ -55,6 +55,12 @@ class CheckPage extends React.Component {
         let { positionList, act_id } = this.state;
         const msg = { positionList, act_id };
         await PubSub.publish('storage/setting/position', msg);
+    }
+
+    async onClickTestSeries(){
+        let { act_id } = this.state;
+        const msg = { act_id };
+        await PubSub.publish('storage/client/control', msg);
     }
 
     onChangeSlider(event) {
@@ -96,7 +102,8 @@ class CheckPage extends React.Component {
                 <div className="setting_page--btn--back">
                     <Button color="info" onClick={() => window.location.href = '/'} onClick={() => this.onClickTest()}>TEST TỌA ĐỘ</Button>{''}
                     <Button style={{ marginLeft: 30, marginRight: 15 }} color="info" onClick={() => this.onAddList()}>THÊM VÀO DANH SÁCH</Button>{''}
-                    <Button style={{ marginLeft: 15, marginRight: 30 }} color="success" onClick={() => this.onClickSave()}>LƯU LẠI</Button>{''}
+                    <Button style={{ marginLeft: 15, marginRight: 15 }} color="success" onClick={() => this.onClickSave()}>LƯU LẠI</Button>{''}
+                    <Button style={{ marginLeft: 15, marginRight: 30 }} color="info" onClick={() => this.onClickTestSeries()}>TEST DATA</Button>{''}
                     <Button color="secondary" onClick={() => window.location.href = '/'}>QUAY LẠI</Button>{''}
                 </div>
             </div>

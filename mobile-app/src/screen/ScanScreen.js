@@ -60,10 +60,25 @@ class ScanScreen extends React.Component {
     handleBarCodeScanned = async ({ type, data }) => {
         const { params } = this.props.navigation.state;
         const { goBack } = this.props.navigation;
-
-        await PubSub.publish('storage/client/qr', data);
+        if (params.role === 'check') {
+            await PubSub.publish('storage/client/qr', JSON.parse(data));
+        }
 
         if (params.role === 'export') {
+            const { block_id } = JSON.parse(data);
+
+            switch (block_id) {
+                case 'block_1':
+                    msg = { act_id: 'pick_1' };
+                    await PubSub.publish('storage/client/control', msg);
+                    break;
+                case 'block_2':
+                    msg = { act_id: 'pick_2' };
+                    await PubSub.publish('storage/client/control', msg);
+                    break;
+                default:
+                Alert.alert('Thông báo', 'Không có hàng trong kho!');
+            }
             Alert.alert('Thông báo', 'Đã quét xong');
             goBack();
         }

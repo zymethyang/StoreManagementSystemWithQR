@@ -26,7 +26,7 @@ void setup() {
   //Initialize which function will be called when the thread start and interval time to start this thread.
 
   outputSignalThread->onRun(outputSignalCallback);
-  outputSignalThread->setInterval(1000);
+  outputSignalThread->setInterval(100);
 
   controll.add(outputSignalThread);
 }
@@ -44,8 +44,8 @@ void receiveEvent(int howMany) {
     message[i] = deg;
     i++;
   }
-
-  pos.setState(message[0], message[1], message[2], message[3], message[4], message[5]);
+  Serial.print(message[0]); Serial.print(message[1]); Serial.print(message[2]); Serial.print(message[3]); Serial.print(message[4]); Serial.println(message[5]);
+  pos.setState(message[0], message[1], message[2], message[3], message[4], message[1]);
 }
 
 

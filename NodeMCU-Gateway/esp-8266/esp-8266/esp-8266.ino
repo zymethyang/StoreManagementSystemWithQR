@@ -10,8 +10,8 @@
 
 
 //Declare global variables
-const char* ssid = "GAIA";
-const char* password = "qwertyuiop";
+const char* ssid = "Trung That 1";
+const char* password = "11091981";
 const char* publish_topic = "storage/feedback";
 const char* subcribe_topic = "storage/control";
 const char* AWS_endpoint = "a162573iz22qwr-ats.iot.ap-southeast-1.amazonaws.com"; //MQTT broker ip

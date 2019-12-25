@@ -15,13 +15,11 @@ class HomeScreen extends React.Component {
                         <Button title="Kiểm hàng"
                             onPress={() => navigate('Scan', { role: 'check' })} />
                     </View>
-                    {/* 
                     <View style={styles.btnLayoutChildRight}>
                         <Button title="Xuất hàng"
                             color="#f194ff"
                             onPress={() => navigate('Scan', { role: 'export' })} />
                     </View>
-                    */}
                 </View>
             </View>
         );
